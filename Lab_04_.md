@@ -22,7 +22,8 @@ alter table projekt add foreign key (menadzer_projektu) references pracownik(id_
 -- pkt 1
 ```sql
 alter table zadanie add column godziny_szacowane INTEGER default 8;
--- pkt 2
+```
+--pkt 2
 ```sql
 update zadanie set godziny_szacowane = 4 where id_zadania = 1;
 update zadanie set godziny_szacowane = 12 where id_zadania = 2;
