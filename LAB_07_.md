@@ -83,3 +83,52 @@ FROM PRODUCT p
 JOIN company_2025.CATEGORY c on p.CATEGORY_ID=c.CATEGORY_ID
 GROUP BY p.CATEGORY_ID;
 ```
+4.
+--- pkt1
+```sql
+Select ORDER_ID, IF(ORDER_STATUS in (3,4,5,7,10),"zakończone",'Inny' ) as status
+from `ORDER` o;
+```
+--- pkt2
+```sql
+SELECT p.PRODUCT_NAME,
+CASE when i.AMOUNT = 0 THEN 'brak'
+when 0<i.AMOUNT and i.AMOUNT<10 then 'mała ilość'
+when 9<i.AMOUNT and i.AMOUNT<31 Then "średnia ilość"
+when i.AMOUNT>30 then 'duza ilosc'
+else 'błąd w danych'
+END AS "dostępność"
+FROM PRODUCT p
+join INVENTORY i on i.PRODUCT_ID=p.PRODUCT_ID; 
+```
+--- pkt3
+```sql
+SELECT ifnull(TAX_IDENTIFIER, 'klient indywidualny')
+FROM CLIENT;
+```
+--- pkt1
+```sql
+SELECT CITY,
+substr(POSTAL_CODE,1,2)
+FROM CLIENT_ADDRESS;
+```
+--- pkt2
+```sql
+SELECT CITY AS MIASTO,
+group_concat(DISTINCT SUBSTR(POSTAL_CODE,1,2)) AS 'UNIKALNE 2 ZNAKI Z KODU' 
+FROM CLIENT_ADDRESS
+GROUP BY CITY;
+```
+--- pkt3
+```sql
+SELECT REGEXP_SUBSTR(substr(STREET,5), '^[^0-9]+')
+FROM CLIENT_ADDRESS;
+```
+LUB
+```sql
+SELECT substr(STREET,
+POSITION(" " in STREET), 
+length(STREET)-length(((substr(REVERSE(STREET),1,POSITION(" " in STREET)))))-1)
+AS ULICA
+FROM CLIENT_ADDRESS;
+```
